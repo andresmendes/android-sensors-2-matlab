@@ -1,21 +1,28 @@
 %% Android Sensors 2 Matlab
+%
+%
 
-IPcelular = '10.204.0.102';
-IPnote = '10.204.0.141';
+close all
+clear all
+clc
 
-u = udp('10.204.0.102',5554,'LocalPort',5555,'InputBufferSize',1024);
+% Set up
+phoneIP = '10.204.0.102';
+port = 5555;
+
+u = udp(phoneIP , port - 1 , 'LocalPort' , port , 'InputBufferSize' , 1024);
 fopen(u);
 
 % Preallocating
 msgMat = zeros(99,3);
 k = 1;
-while 1
 
-    % get the message/payload only assuming a max size of 200 bytes
+while k < 1000
+
     [msg,~] = fread(u,10);
 
     msgCell = strsplit(char(msg)',',');
-    msgNum = [str2num(msgCell{3}) str2num(msgCell{4}) str2num(msgCell{5})];
+    msgNum = [str2double(msgCell{3}) str2double(msgCell{4}) str2double(msgCell{5})];
 
     if k < 100
         msgMat(k,:) = msgNum;
@@ -34,6 +41,5 @@ while 1
 
 end
 
-% fclose(u);
-% esse aqui que fecha direito
+% Close all instruments
 fclose(instrfindall);
