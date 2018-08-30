@@ -6,7 +6,7 @@ close all
 clear all
 clc
 
-% Deleting all instruments
+% Deleting   all instruments
 delete(instrfindall);
 
 % Set up
@@ -25,7 +25,14 @@ while k < 1000
     [msg,~] = fread(u,10);
 
     msgCell = strsplit(char(msg)',',');
-    msgNum = [str2double(msgCell{3}) str2double(msgCell{4}) str2double(msgCell{5})];
+    
+    % Sometimes, size(msgCell,2) < 5. This is a workaround to avoid errors.
+    if size(msgCell,2) == 5
+        msgNum = [str2double(msgCell{3}) str2double(msgCell{4}) str2double(msgCell{5})];
+    else
+        msgNum = zeros(1,3);
+    end
+
 
     if k < 100
         msgMat(k,:) = msgNum;
