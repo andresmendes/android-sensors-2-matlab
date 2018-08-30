@@ -6,6 +6,9 @@ close all
 clear all
 clc
 
+% Deleting all instruments
+delete(instrfindall);
+
 % Set up
 phoneIP = '10.204.0.102';
 port = 5555;
